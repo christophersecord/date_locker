@@ -4,6 +4,7 @@
  * @language SQL
  * @platform mySQL
  */
+drop table if exists dl_appointmentLock;
 drop table if exists dl_appointment;
 drop table if exists dl_client;
 drop table if exists dl_availability;
@@ -16,8 +17,6 @@ create table dl_availability (
   startAvailability datetime not null,
   endAvailability datetime not null
 );
-
-/** 
 
 /** client
  * @hint one row per client that has scheduled an appointment.
@@ -50,4 +49,17 @@ create table dl_appointment (
   memo varchar(250) null,
 
   foreign key(clientID) references dl_client(clientID)
+);
+
+/** appointmentLock
+ * @hint temporarily locks a block of time so that a user can log in or pay or whatever
+ */
+create table dl_appointmentLock (
+	lockID int not null auto_increment primary key,
+	lockToken char(36) not null,
+
+  startTime datetime not null,
+  endTime datetime not null,
+
+  bookedOn timestamp not null default now()
 );
