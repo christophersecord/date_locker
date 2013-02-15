@@ -3,7 +3,7 @@ drop function if exists dl_isAvailable;
 DELIMITER //
 
 /** isAvailable
- * @hint returns true if the proposed time block is available as an appointment
+ * @hint returns true if the proposed time block is available as an appointment and is a valid appointment
  */
 create function dl_isAvailable(aStartTime datetime, aEndTime datetime)
 returns bit
@@ -16,14 +16,43 @@ begin
   declare pEnd datetime 
   default str_to_date(concat('1900-01-01 ',hour(aEndTime),':',minute(aEndTime)-1),'%Y-%m-%d %H:%i');
 
-  -- end time must be greater than start time
-  if aEndTime <= aStartTime then
+  declare pStartTimeOffset int;
+
+  -- appointment must be far enough in advance
+  declare duration int;
+  select intVal
+  into duration
+  from dl_config
+  where varName='apt_min_advance';
+
+  if hour(timeDiff(aStartTime,now())) < duration then
     return 0;
   end if;
 
-  -- TODO: startTime must start on an hour or half-hour boundry
-  -- TODO: appointment length must be an approved time
+  -- end time must be greater than start time and be on the same day
+  if (aEndTime <= aStartTime) || (day(aStartTime) != day(aEndTime)) then
+    return 0;
+  end if;
 
+  -- startTime must start on an hour or half-hour boundry
+  select minute(aStartTime)%intVal
+  into pStartTimeOffset
+  from dl_config where varName='apt_start_times';
+
+  if pStartTimeOffset != 0 then
+    return 0;
+  end if;
+
+  -- appointment length must be an approved duration
+  if not exists (
+    select *
+    from dl_appointmentDuration
+    where minutes = minute(timeDiff(aStartTime,aEndTime))
+  ) then
+    return 0;
+  end if;
+
+  -- appointment must be on an allowed time block
   if exists (
     -- does the proposed appointment fit entirely within a designated availability block
     select * from dl_availability
