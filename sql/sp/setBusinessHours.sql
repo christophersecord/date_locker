@@ -3,7 +3,8 @@ drop procedure if exists dl_setBusinessHours;
 DELIMITER //
 
 /** setBusinessHours
- * @hint 
+ * @hint sets blocks of time when appointments are possible on a given day of week.
+ * openBlocks is a string of comma-delimited times in the format, HH:MM
  */
 create procedure dl_setBusinessHours(
   in selectedDayOfWeek int,
@@ -11,21 +12,28 @@ create procedure dl_setBusinessHours(
 )
 begin
 
+  declare top varchar(5);
+
   -- clear existing hours for this day
-  delete from dl_availability
+  delete from dl_businessHours
   where dayOfWeek = selectedDayOfWeek;
 
   -- loop through new open blocks
-/*
-  set @newAvailableBlocks = '8:00,11:00,13:30,17:30';
+  while dl_listLen(openBlocks) > 0 do
 
-  while (locate(',', @newAvailableBlocks) > 0)
-  DO
-      SET @value = ELT(1, @myArrayOfValue);
-      SET @value = SUBSTRING(@myArrayOfValue, LOCATE(',',@myArrayOfValue) + 1);
+    set top = dl_listFirst(openBlocks);
+    set openBlocks = dl_listRest(openBlocks);
 
-      INSERT INTO `EXEMPLE` VALUES(@value, 'hello');
-  END WHILE;
-*/
+    insert dl_businessHours (dayOfWeek,startAvailability,endAvailability)
+    values (
+      selectedDayOfWeek,
+      str_to_date(concat('1900-01-01 ',top),'%Y-%m-%d %H:%i'),
+      str_to_date(concat('1900-01-01 ',dl_listFirst(openBlocks)),'%Y-%m-%d %H:%i')
+    );
+
+    set openBlocks = dl_listRest(openBlocks);
+
+  end while;
+
 
 end //
