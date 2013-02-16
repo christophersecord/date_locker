@@ -1,11 +1,11 @@
-drop procedure if exists dl_getAvailability;
+drop procedure if exists dl_getBusinessHours;
 
 DELIMITER //
 
-/** getAvailability
+/** getBusinessHours
  * @hint for a selected day, returns all available 30-minute time blocks
  */
-create procedure dl_getAvailability(in selectedDay date)
+create procedure dl_getBusinessHours(in selectedDay date)
 begin
 
   declare pStart datetime default selectedDay;
@@ -18,7 +18,8 @@ begin
   -- loop through all time blocks in the current day
   while day(selectedDay) = day(pStart) do
  
-   -- is the smallest possible appointment available at this time?
+    -- is the smallest possible appointment available at this time?
+    -- TODO: get smallest appoint from dl_appointmentDuration
     set pEnd = date_add(pStart, interval 30 minute);
     if dl_isAvailable(pStart,pEnd)
     then 

@@ -35,7 +35,7 @@ begin
     return 2;
   end if;
 
-  -- startTime must start on an hour or half-hour boundry
+  -- startTime must start on an hour or half-hour boundry (as defined by the config variable)
   select minute(aStartTime)%intVal
   into pStartTimeOffset
   from dl_config where varName='apt_start_times';
@@ -57,7 +57,7 @@ begin
 /*
   if exists (
     -- does the proposed appointment fit entirely within a designated availability block
-    select * from dl_availability
+    select * from dl_businessHours
     where
       startAvailability <= pStart
       and endAvailability >= pEnd
@@ -84,7 +84,7 @@ begin
 -- remove before flight
   if not exists (
     -- does the proposed appointment fit entirely within a designated availability block
-    select * from dl_availability
+    select * from dl_businessHours
     where
       startAvailability <= pStart
       and endAvailability >= pEnd
