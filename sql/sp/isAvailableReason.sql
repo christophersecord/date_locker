@@ -1,12 +1,12 @@
-drop function if exists dl_isAvailable;
+drop function if exists dl_isAvailableReason;
 
 DELIMITER //
 
-/** isAvailable
- * @hint returns true if the proposed time block is available as an appointment and is a valid appointment
+/** isAvailableReason
+ * @hint if an appointment time is not available, returns a string indicating why
  */
-create function dl_isAvailable(aStartTime datetime, aEndTime datetime)
-returns bit
+create function dl_isAvailableReason(aStartTime datetime, aEndTime datetime)
+returns varchar(100)
 begin
 
   declare pStart datetime
@@ -25,13 +25,17 @@ begin
   from dl_config
   where varName='apt_min_advance';
 
+  if dl_isAvailable(aStartTime,aEndTime) then
+    return 'available';
+  end if;
+
   if hour(timeDiff(aStartTime,now())) < duration then
-    return 0;
+    return 'insufficient advance notice';
   end if;
 
   -- end time must be greater than start time and be on the same day
   if (aEndTime <= aStartTime) || (day(aStartTime) != day(aEndTime)) then
-    return 0;
+    return 'invalid timespan';
   end if;
 
   -- startTime must start on an hour or half-hour boundry (as defined by the config variable)
@@ -40,7 +44,7 @@ begin
   from dl_config where varName='apt_start_times';
 
   if pStartTimeOffset != 0 then
-    return 0;
+    return 'invalid start time boundry';
   end if;
 
   -- appointment length must be an approved duration
@@ -49,36 +53,42 @@ begin
     from dl_appointmentDuration
     where minutes = minute(timeDiff(aStartTime,aEndTime)) + hour(timeDiff(aStartTime,aEndTime))*60
   ) then
-    return 0;
+    return 'invalid duration';
   end if;
 
-  -- appointment must be on an allowed time block
-  if exists (
+  if not exists (
     -- does the proposed appointment fit entirely within a designated availability block
     select * from dl_businessHours
     where
       startAvailability <= pStart
       and endAvailability >= pEnd
       and dayOfWeek = dayOfWeek(aStartTime)
-  ) and not exists (
-    -- is there no other appointment that conflicts with it
-    select * from dl_appointment
-    where
-      (startTime < aStartTime and aStartTime < endTime) -- can't use "between" operator here because it matches <=
-      or (startTime < aEndTime and aEndTime < endTime)
+  ) then
 
-  ) and not exists (
+    return 'outside business hours';
+  end if;
+
+  if exists (
+    -- is there no other appointment that conflicts with it
+  select * from dl_appointment
+    where
+      aStartTime between startTime and endTime
+      or aEndTime between startTime and endTime
+  ) then
+    return 'conflicting appointment';
+  end if;
+
+  if exists (
     -- this timeblock is not locked by another user
     select * from dl_appointmentLock
     where
       (startTime < aStartTime and aStartTime < endTime) -- can't use "between" operator here either
       or (startTime < aEndTime and aEndTime < endTime)
   ) then
-
-    return 1;
-
+    return 'time block locked';
   end if;
 
-  return 0;
+
+  return 'ERROR! isAvailable() and isAvailableReason() disagree!';
 
 end //
