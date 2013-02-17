@@ -72,8 +72,9 @@ begin
     -- is there no other appointment that conflicts with it
   select * from dl_appointment
     where
-      aStartTime between startTime and endTime
-      or aEndTime between startTime and endTime
+      (startTime <= aStartTime and aStartTime < endTime)
+      or (startTime < aEndTime and aEndTime < endTime)
+      or (startTime > aStartTime and aEndTime > endTime)
   ) then
     return 'conflicting appointment';
   end if;
@@ -82,8 +83,9 @@ begin
     -- this timeblock is not locked by another user
     select * from dl_appointmentLock
     where
-      (startTime < aStartTime and aStartTime < endTime) -- can't use "between" operator here either
+      (startTime <= aStartTime and aStartTime < endTime)
       or (startTime < aEndTime and aEndTime < endTime)
+      or (startTime > aStartTime and aEndTime > endTime)
   ) then
     return 'time block locked';
   end if;

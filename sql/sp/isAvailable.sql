@@ -64,15 +64,16 @@ begin
     -- is there no other appointment that conflicts with it
     select * from dl_appointment
     where
-      (startTime < aStartTime and aStartTime < endTime) -- can't use "between" operator here because it matches <=
+      (startTime <= aStartTime and aStartTime < endTime)
       or (startTime < aEndTime and aEndTime < endTime)
-
+      or (startTime > aStartTime and aEndTime > endTime)
   ) and not exists (
     -- this timeblock is not locked by another user
     select * from dl_appointmentLock
     where
-      (startTime < aStartTime and aStartTime < endTime) -- can't use "between" operator here either
+      (startTime <= aStartTime and aStartTime < endTime)
       or (startTime < aEndTime and aEndTime < endTime)
+      or (startTime > aStartTime and aEndTime > endTime)
   ) then
 
     return 1;
