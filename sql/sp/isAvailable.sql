@@ -19,13 +19,7 @@ begin
   declare pStartTimeOffset int;
 
   -- appointment must be far enough in advance
-  declare duration int;
-  select intVal
-  into duration
-  from dl_config
-  where varName='apt_min_advance';
-
-  if hour(timeDiff(aStartTime,now())) < duration then
+  if aStartTime < dl_earliestAvailability() then
     return 0;
   end if;
 
@@ -65,14 +59,14 @@ begin
     select * from dl_appointment
     where
       (startTime <= aStartTime and aStartTime < endTime)
-      or (startTime < aEndTime and aEndTime < endTime)
+      or (startTime < aEndTime and aEndTime <= endTime)
       or (startTime > aStartTime and aEndTime > endTime)
   ) and not exists (
     -- this timeblock is not locked by another user
     select * from dl_appointmentLock
     where
       (startTime <= aStartTime and aStartTime < endTime)
-      or (startTime < aEndTime and aEndTime < endTime)
+      or (startTime < aEndTime and aEndTime <= endTime)
       or (startTime > aStartTime and aEndTime > endTime)
   ) then
 

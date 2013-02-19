@@ -19,18 +19,12 @@ begin
   declare pStartTimeOffset int;
 
   -- appointment must be far enough in advance
-  declare duration int;
-  select intVal
-  into duration
-  from dl_config
-  where varName='apt_min_advance';
+  if aStartTime < dl_earliestAvailability() then
+    return 'insufficient advance notice';
+  end if;
 
   if dl_isAvailable(aStartTime,aEndTime) then
     return 'available';
-  end if;
-
-  if hour(timeDiff(aStartTime,now())) < duration then
-    return 'insufficient advance notice';
   end if;
 
   -- end time must be greater than start time and be on the same day
@@ -73,7 +67,7 @@ begin
   select * from dl_appointment
     where
       (startTime <= aStartTime and aStartTime < endTime)
-      or (startTime < aEndTime and aEndTime < endTime)
+      or (startTime < aEndTime and aEndTime <= endTime)
       or (startTime > aStartTime and aEndTime > endTime)
   ) then
     return 'conflicting appointment';
@@ -84,7 +78,7 @@ begin
     select * from dl_appointmentLock
     where
       (startTime <= aStartTime and aStartTime < endTime)
-      or (startTime < aEndTime and aEndTime < endTime)
+      or (startTime < aEndTime and aEndTime <= endTime)
       or (startTime > aStartTime and aEndTime > endTime)
   ) then
     return 'time block locked';

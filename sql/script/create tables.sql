@@ -5,6 +5,7 @@
  * @platform mySQL
  */
 drop table if exists dl_login;
+drop table if exists dl_appointmentBlock;
 drop table if exists dl_appointmentLock;
 drop table if exists dl_appointment;
 drop table if exists dl_businessHours;
@@ -21,8 +22,25 @@ create table dl_config (
   charVal varchar(50) null,
   dateVal datetime null
 );
+/** add default config values
+ */
+
+-- apt_min_advance is the minimum advanced notice, in days, that must be given for an appointment.
+-- 0 indicates that appointments can be made at 12:01 AM the following day (assuming business hours allow)
+-- 1 indicates that, for example, if now() = 9AM monday, the test.dl_isAvailable
+insert dl_config (varName,intVal) values ('apt_min_advance',1);
+
+-- apt_advance_stt is the start time (the date part is ignored) from when apt_min_advance will be calculated.
+-- it's sort of like an international dateline.
+-- 18:00 means that at 17:59 a client can still book an appointment for the following day. But at 18:00 the
+-- client would have to wait until the day after that to book.
+insert dl_config (varName,dateVal) values ('apt_advance_stt','1900-01-01 18:00');
+
+-- apt_start_times determines when appointments can start.
+-- 30 means that appointments can start on the hour or half-hour
 insert dl_config (varName,intVal) values ('apt_start_times',30);
-insert dl_config (varName,intVal) values ('apt_min_advance',24);
+
+-- apt_lock_time determines how long an appointment can be locked before the lock is deleted.
 insert dl_config (varName,intVal) values ('apt_lock_time',720);
 
 /** client
@@ -54,15 +72,6 @@ create table dl_businessHours (
   startAvailability datetime not null,
   endAvailability datetime not null
 );
--- create availability blocks for M and F from 10:00-12:00 and 13:00-17:00
-insert dl_businessHours (dayOfWeek,startAvailability,endAvailability)
-values (2,'1900-01-01 10:00','1900-01-01 12:00');
-insert dl_businessHours (dayOfWeek,startAvailability,endAvailability)
-values (2,'1900-01-01 13:00','1900-01-01 17:00');
-insert dl_businessHours (dayOfWeek,startAvailability,endAvailability)
-values (6,'1900-01-01 10:00','1900-01-01 12:00');
-insert dl_businessHours (dayOfWeek,startAvailability,endAvailability)
-values (6,'1900-01-01 13:00','1900-01-01 17:00');
 
 /** appointment
  * @hint one row per scheduled appointment or blocked time
@@ -93,6 +102,16 @@ create table dl_appointmentLock (
   endTime datetime not null,
 
   bookedOn timestamp not null default now()
+);
+
+/** appointmentBlock
+ * @hint blocks off time when no appointments should be allowed. 
+ */
+create table dl_appointmentBlock (
+  blockID int not null auto_increment primary key,
+
+  startTime datetime not null,
+  endTime datetime not null
 );
 
 /** login
