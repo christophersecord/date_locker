@@ -47,13 +47,26 @@ begin
   end if;
 
   -- appointment must be on an allowed time block
-  if exists (
-    -- does the proposed appointment fit entirely within a designated availability block
-    select * from dl_businessHours
-    where
-      startAvailability <= pStart
-      and endAvailability >= pEnd
-      and dayOfWeek = dayOfWeek(aStartTime)
+  if (
+
+    exists (
+      -- the appointment is inside normal business hours
+      select *
+      from dl_businessHours
+      where
+        startAvailability <= pStart
+        and endAvailability >= pEnd
+        and dayOfWeek = dayOfWeek(aStartTime)
+
+    ) or exists (
+      -- the appointment is inside a designated availability block
+      -- TODO: this code and the business hours code needs to be combined
+      select * from dl_appointmentAvailabilityBlock
+      where
+        appointmentsAllowed = 1
+        and startTime <= aStartTime and aEndTime <= endTime
+    )
+
   ) and not exists (
     -- is there no other appointment that conflicts with it
     select * from dl_appointment
@@ -61,6 +74,18 @@ begin
       (startTime <= aStartTime and aStartTime < endTime)
       or (startTime < aEndTime and aEndTime <= endTime)
       or (startTime > aStartTime and aEndTime > endTime)
+
+  ) and not exists (
+    -- the time has not been blocked off as unavailable
+    select * from dl_appointmentAvailabilityBlock
+    where
+      appointmentsAllowed = 0
+      and (
+        (startTime <= aStartTime and aStartTime < endTime)
+        or (startTime < aEndTime and aEndTime <= endTime)
+        or (startTime > aStartTime and aEndTime > endTime)
+      )
+
   ) and not exists (
     -- this timeblock is not locked by another user
     select * from dl_appointmentLock

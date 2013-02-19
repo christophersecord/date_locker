@@ -5,7 +5,7 @@
  * @platform mySQL
  */
 drop table if exists dl_login;
-drop table if exists dl_appointmentBlock;
+drop table if exists dl_appointmentAvailabilityBlock;
 drop table if exists dl_appointmentLock;
 drop table if exists dl_appointment;
 drop table if exists dl_businessHours;
@@ -45,14 +45,12 @@ insert dl_config (varName,intVal) values ('apt_lock_time',720);
 
 /** client
  * @hint one row per client that has scheduled an appointment.
- * clientID=1 corresponds to a blocked-out time (meaning, a block where you don't want to allow people to book times)
  */
 create table dl_client (
   clientID int not null auto_increment primary key,
   emailAddress varchar(250) not null,
   passwd char(32) not null
 );
-insert dl_client (emailAddress,passwd) values ('blocked','');
 
 /** appointmentDuration
  * @hint allowable durations, in minutes, of an appointment
@@ -104,14 +102,18 @@ create table dl_appointmentLock (
   bookedOn timestamp not null default now()
 );
 
-/** appointmentBlock
- * @hint blocks off time when no appointments should be allowed. 
+/** appointmentAvailabilityBlock
+ * @hint blocks off time when no appointments should be allowed, or when appointments are allowed outside business hours 
  */
-create table dl_appointmentBlock (
+create table dl_appointmentAvailabilityBlock (
   blockID int not null auto_increment primary key,
+  appointmentsAllowed bit not null default 0,
 
   startTime datetime not null,
-  endTime datetime not null
+  endTime datetime not null,
+
+  googleCalendarGUID varchar(250) null,
+  memo varchar(250) null
 );
 
 /** login
