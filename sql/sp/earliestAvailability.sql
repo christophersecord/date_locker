@@ -1,9 +1,15 @@
+/** function for dana_lupo project
+ * @author christophersecord
+ * @date 20130319
+ * @language SQL
+ * @platform mySQL
+ */
 drop function if exists dl_earliestAvailability;
 
 DELIMITER //
 
 /** earliestAvailability
- * @hint returns the earliest possible appointment availability based on business rules on dl_config
+ * returns the earliest possible appointment availability based on business rules on dl_config
  * Eample: if the current time is 6:00 PM, no one should be allowed to book an appointment before noon the next day
  */
 create function dl_earliestAvailability()

@@ -1,9 +1,15 @@
+/** stored procedure for dana_lupo project
+ * @author christophersecord
+ * @date 20130319
+ * @language SQL
+ * @platform mySQL
+ */
 drop procedure if exists dl_lockCleanup;
 
 DELIMITER //
 
 /** lockCleanup
- * @hint deletes timed-out locks. Truncates the table (for performance reasons) if no valid locks remain
+ * deletes timed-out locks. Truncates the table (for performance reasons) if no valid locks remain
  */
 create procedure dl_lockCleanup()
 begin

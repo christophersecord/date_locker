@@ -1,9 +1,15 @@
+/** function for dana_lupo project
+ * @author christophersecord
+ * @date 20130319
+ * @language SQL
+ * @platform mySQL
+ */
 drop function if exists dl_isAvailableReason;
 
 DELIMITER //
 
 /** isAvailableReason
- * @hint if an appointment time is not available, returns a string indicating why
+ * if an appointment time is not available, returns a string indicating why
  */
 create function dl_isAvailableReason(aStartTime datetime, aEndTime datetime)
 returns varchar(100)

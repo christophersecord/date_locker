@@ -1,12 +1,12 @@
-drop procedure if exists dl_setBusinessHours;
+drop procedure if exists dl_businessHoursSet;
 
 DELIMITER //
 
-/** setBusinessHours
- * @hint sets blocks of time when appointments are possible on a given day of week.
+/** setBusinessHoursSet
+ * sets blocks of time when appointments are possible on a given day of week.
  * openBlocks is a string of comma-delimited times in the format, HH:MM
  */
-create procedure dl_setBusinessHours(
+create procedure dl_businessHoursSet (
   in selectedDayOfWeek int,
   in openBlocks varchar(250)
 )

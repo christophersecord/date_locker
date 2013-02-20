@@ -1,3 +1,9 @@
+/** the functions used to process lists of strings for dana_lupo project
+ * @author christophersecord
+ * @date 20130319
+ * @language SQL
+ * @platform mySQL
+ */
 drop function if exists dl_listRest;
 drop function if exists dl_listFirst;
 drop function if exists dl_listLen;
@@ -5,7 +11,7 @@ drop function if exists dl_listLen;
 DELIMITER //
 
 /** listLen
- * @hint counts the number of items in a comma-delimited list
+ * counts the number of items in a comma-delimited list
  */
 create function dl_listLen(list varchar(250))
 returns int
@@ -29,7 +35,7 @@ begin
 end //
 
 /** listFirst
- * @hint returns the first item in a comma-delimited list
+ * returns the first item in a comma-delimited list
  */
 -- TODO: should skip empty items or leading "," as in, ",one,two"
 create function dl_listFirst(list varchar(250))
@@ -45,7 +51,7 @@ begin
 end //
 
 /** listRest
- * @hint
+ * returns all of a string after the first element
  */
 create function dl_listRest(list varchar(250))
 returns varchar(250)

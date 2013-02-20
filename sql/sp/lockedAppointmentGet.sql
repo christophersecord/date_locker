@@ -1,11 +1,17 @@
-drop procedure if exists dl_getLockedAppointment;
+/** stored procedure for dana_lupo project
+ * @author christophersecord
+ * @date 20130319
+ * @language SQL
+ * @platform mySQL
+ */
+drop procedure if exists dl_lockedAppointmentGet;
 
 DELIMITER //
 
-/** getLockedAppointment
- * @hint 
+/** lockedAppointmentGet
+ * gets info on a single locked appointment, identified by the lockToken
  */
-create procedure dl_getLockedAppointment(
+create procedure dl_lockedAppointmentGet (
   in lockTokenStr varchar(46), 
   out pStart datetime, 
   out pEnd datetime,
@@ -22,6 +28,5 @@ begin
   from dl_appointmentLock
   where lockID = tokenID
     and lockToken = tokenGUID;
-
 
 end //

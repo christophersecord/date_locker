@@ -1,9 +1,15 @@
+/** function for dana_lupo project
+ * @author christophersecord
+ * @date 20130319
+ * @language SQL
+ * @platform mySQL
+ */
 drop function if exists dl_isAvailable;
 
 DELIMITER //
 
 /** isAvailable
- * @hint returns true if the proposed time block is available as an appointment and is a valid appointment
+ * returns true if the proposed time block is available as an appointment and is a valid appointment
  */
 create function dl_isAvailable(aStartTime datetime, aEndTime datetime)
 returns bit

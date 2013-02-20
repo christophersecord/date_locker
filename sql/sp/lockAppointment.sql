@@ -1,11 +1,23 @@
+/** stored procedure for dana_lupo project
+ * @author christophersecord
+ * @date 20130319
+ * @language SQL
+ * @platform mySQL
+ */
 drop procedure if exists dl_lockAppointment;
 
 DELIMITER //
 
 /** lockAppointment
- * @hint writes a lock row for an appointment time
+ * writes a lock row for an appointment time if the appointment is available.
+ * returns a lockTokenStr which is a string used to identify the lock
  */
-create procedure dl_lockAppointment(in aStartTime datetime, in aEndTime datetime, out lockTokenStr varchar(46))
+create procedure dl_lockAppointment (
+	in aStartTime datetime,
+	in aEndTime datetime, 
+	
+	out lockTokenStr varchar(46)
+)
 begin
 
   declare lockID int;
