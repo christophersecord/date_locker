@@ -12,7 +12,7 @@ DELIMITER //
  * returns all appointments for a specific date
  */
 create procedure dl_appointmentList (
-  in pDate datetime,
+  in pDate date
 )
 begin
 
@@ -24,7 +24,7 @@ begin
     a.memo
   from dl_appointment a
   join dl_client c on a.clientID = c.clientID
-  where date(startTime) = date(pDate)
+  where date(startTime) = pDate
   order by startTime, endTime
  
 end //
