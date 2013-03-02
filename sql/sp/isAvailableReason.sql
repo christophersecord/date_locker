@@ -11,7 +11,7 @@ DELIMITER //
 /** isAvailableReason
  * if an appointment time is not available, returns a string indicating why
  */
-create function dl_isAvailableReason(aStartTime datetime, aEndTime datetime)
+create function dl_isAvailableReason (aStartTime datetime, aEndTime datetime)
 returns varchar(100)
 begin
 

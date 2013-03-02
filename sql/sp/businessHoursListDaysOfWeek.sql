@@ -11,7 +11,7 @@ DELIMITER //
 /** businessHoursListDaysOfWeek
  * returns the days of the week (as int, Sunday=1) when appointments are possible
  */
-create procedure dl_businessListHoursDaysOfWeek()
+create procedure dl_businessHoursListDaysOfWeek ()
 begin
 
   select distinct dayOfWeek

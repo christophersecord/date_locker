@@ -11,7 +11,7 @@ DELIMITER //
 /** appointmentCreateFromLock
  * creates and appointment from an appointment lock, then deletes the lock 
  */
-create procedure dl_appointmentCreateFromLock(
+create procedure dl_appointmentCreateFromLock (
   in pLockTokenStr char(46),
   in pClientID int,
   out appointmentID int

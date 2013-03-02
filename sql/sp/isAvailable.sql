@@ -11,7 +11,10 @@ DELIMITER //
 /** isAvailable
  * returns true if the proposed time block is available as an appointment and is a valid appointment
  */
-create function dl_isAvailable(aStartTime datetime, aEndTime datetime)
+create function dl_isAvailable (
+	aStartTime datetime,
+	aEndTime datetime
+)
 returns bit
 begin
 

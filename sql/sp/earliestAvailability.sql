@@ -12,7 +12,7 @@ DELIMITER //
  * returns the earliest possible appointment availability based on business rules on dl_config
  * Eample: if the current time is 6:00 PM, no one should be allowed to book an appointment before noon the next day
  */
-create function dl_earliestAvailability()
+create function dl_earliestAvailability ()
 returns datetime
 begin
 

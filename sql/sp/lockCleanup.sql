@@ -11,7 +11,7 @@ DELIMITER //
 /** lockCleanup
  * deletes timed-out locks. Truncates the table (for performance reasons) if no valid locks remain
  */
-create procedure dl_lockCleanup()
+create procedure dl_lockCleanup ()
 begin
 
   -- this temp table to hold lockIDs is necessary to avoid MySQL error 1093

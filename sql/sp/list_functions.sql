@@ -13,7 +13,7 @@ DELIMITER //
 /** listLen
  * counts the number of items in a comma-delimited list
  */
-create function dl_listLen(list varchar(250))
+create function dl_listLen (list varchar(250))
 returns int
 begin
 
@@ -38,7 +38,7 @@ end //
  * returns the first item in a comma-delimited list
  */
 -- TODO: should skip empty items or leading "," as in, ",one,two"
-create function dl_listFirst(list varchar(250))
+create function dl_listFirst (list varchar(250))
 returns varchar(250)
 begin
 
@@ -53,7 +53,7 @@ end //
 /** listRest
  * returns all of a string after the first element
  */
-create function dl_listRest(list varchar(250))
+create function dl_listRest (list varchar(250))
 returns varchar(250)
 begin
 
@@ -62,6 +62,5 @@ begin
   else
     return substring(list,locate(',',list)+1);
   end if;
-
 
 end //
