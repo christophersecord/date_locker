@@ -49,7 +49,9 @@ insert dl_config (varName,intVal) values ('apt_lock_time',720);
 create table dl_client (
   clientID int not null auto_increment primary key,
   emailAddress varchar(250) not null,
-  passwd char(32) not null
+  passwd char(56) not null, -- stores SHA-2 hashes at 224 bits
+
+  unique(emailAddress)
 );
 
 /** appointmentDuration
