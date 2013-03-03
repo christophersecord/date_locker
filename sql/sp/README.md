@@ -1,6 +1,6 @@
- Brief Docs for SPs
+Brief Docs for SPs
 =================
-appointmentAvailabilityBlockCreate
+[appointmentAvailabilityBlockCreate](https://github.com/christophersecord/dana_lupo/blob/master/sql/sp/appointmentAvailabilityBlockCreate.sql)
 -------------------------
 
 procedure
@@ -10,21 +10,21 @@ procedure
 * out blockID int
 
 creates a block of time inside business hours in which appointments can't be made or a block of time outside business hours in which appoints can be made
-appointmentAvailabilityBlockDelete
+[appointmentAvailabilityBlockDelete](https://github.com/christophersecord/dana_lupo/blob/master/sql/sp/appointmentAvailabilityBlockDelete.sql)
 -------------------------
 
 procedure
 * in pBlockID int
 
 deletes an appointment availability block
-appointmentAvailabilityBlockList
+[appointmentAvailabilityBlockList](https://github.com/christophersecord/dana_lupo/blob/master/sql/sp/appointmentAvailabilityBlockList.sql)
 -------------------------
 
 procedure
 * in pDate date
 
 lists all appointment availability blocks for a given date
-appointmentCreate
+[appointmentCreate](https://github.com/christophersecord/dana_lupo/blob/master/sql/sp/appointmentCreate.sql)
 -------------------------
 
 procedure
@@ -34,7 +34,7 @@ procedure
 * out appointmentID int
 
 unconditionally creates an appointment
-appointmentCreateFromLock
+[appointmentCreateFromLock](https://github.com/christophersecord/dana_lupo/blob/master/sql/sp/appointmentCreateFromLock.sql)
 -------------------------
 
 procedure
@@ -43,41 +43,41 @@ procedure
 * out appointmentID int
 
 creates and appointment from an appointment lock, then deletes the lock
-appointmentDelete
+[appointmentDelete](https://github.com/christophersecord/dana_lupo/blob/master/sql/sp/appointmentDelete.sql)
 -------------------------
 
 procedure
 * in pAppointmentID int
 
 deletes an appointment
-appointmentList
+[appointmentList](https://github.com/christophersecord/dana_lupo/blob/master/sql/sp/appointmentList.sql)
 -------------------------
 
 procedure
 * in pDate date
 
 returns all appointments for a specific date
-availabilityGetBlocks
+[availabilityGetBlocks](https://github.com/christophersecord/dana_lupo/blob/master/sql/sp/availabilityGetBlocks.sql)
 -------------------------
 
 procedure
 * in selectedDay date
 
 for a selected day, returns all available 30-minute time blocks
-businessHoursList
+[businessHoursList](https://github.com/christophersecord/dana_lupo/blob/master/sql/sp/businessHoursList.sql)
 -------------------------
 
 procedure
 * in selectedDayOfWeek int
 
 for a selected day, returns the current business hours
-businessHoursListDaysOfWeek
+[businessHoursListDaysOfWeek](https://github.com/christophersecord/dana_lupo/blob/master/sql/sp/businessHoursListDaysOfWeek.sql)
 -------------------------
 
 procedure
 
 returns the days of the week (as int, Sunday=1) when appointments are possible
-businessHoursSet
+[businessHoursSet](https://github.com/christophersecord/dana_lupo/blob/master/sql/sp/businessHoursSet.sql)
 -------------------------
 
 procedure
@@ -85,13 +85,13 @@ procedure
 * in openBlocks varchar(250)
 
 sets blocks of time when appointments are possible on a given day of week. openBlocks is a string of comma-delimited times in the format, HH:MM
-earliestAvailability
+[earliestAvailability](https://github.com/christophersecord/dana_lupo/blob/master/sql/sp/earliestAvailability.sql)
 -------------------------
 
 function - returns: datetime
 
 returns the earliest possible appointment availability based on business rules on dl_config Eample: if the current time is 6:00 PM, no one should be allowed to book an appointment before noon the next day
-isAvailable
+[isAvailable](https://github.com/christophersecord/dana_lupo/blob/master/sql/sp/isAvailable.sql)
 -------------------------
 
 function - returns: bit
@@ -99,7 +99,7 @@ function - returns: bit
 * aEndTime datetime
 
 returns true if the proposed time block is available as an appointment and is a valid appointment
-isAvailableReason
+[isAvailableReason](https://github.com/christophersecord/dana_lupo/blob/master/sql/sp/isAvailableReason.sql)
 -------------------------
 
 function - returns: varchar(100)
@@ -107,14 +107,14 @@ function - returns: varchar(100)
 * aEndTime datetime
 
 if an appointment time is not available, returns a string indicating why
-listLen
+[listLen](https://github.com/christophersecord/dana_lupo/blob/master/sql/sp/listLen.sql)
 -------------------------
 
 function - returns: int
 * list varchar(250)
 
 counts the number of items in a comma-delimited list
-lockAppointment
+[lockAppointment](https://github.com/christophersecord/dana_lupo/blob/master/sql/sp/lockAppointment.sql)
 -------------------------
 
 procedure
@@ -123,13 +123,13 @@ procedure
 * out lockTokenStr varchar(46)
 
 writes a lock row for an appointment time if the appointment is available. returns a lockTokenStr which is a string used to identify the lock
-lockCleanup
+[lockCleanup](https://github.com/christophersecord/dana_lupo/blob/master/sql/sp/lockCleanup.sql)
 -------------------------
 
 procedure
 
 deletes timed-out locks. Truncates the table (for performance reasons) if no valid locks remain
-lockedAppointmentGet
+[lockedAppointmentGet](https://github.com/christophersecord/dana_lupo/blob/master/sql/sp/lockedAppointmentGet.sql)
 -------------------------
 
 procedure
