@@ -31,7 +31,7 @@ begin
 
   end if;
 
-  set lockTokenStr = concat(lockID,'-',token);
+  set lockTokenStr = concat(lockID,',',token);
 
 
 end //

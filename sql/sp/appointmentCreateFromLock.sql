@@ -22,7 +22,7 @@ begin
   declare eTime datetime;
   declare pLockID int;
 
-  call dl_getLockedAppointment(pLockTokenStr,sTime,eTime,pLockID);
+  call dl_lockedAppointmentGet(pLockTokenStr,sTime,eTime,pLockID);
 
   if !isNull(pLockID) then
 
