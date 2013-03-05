@@ -17,8 +17,8 @@ create procedure dl_appointmentAvailabilityBlockList (
 begin
 
   select
-    startDate,
-    endDate,
+    startTime,
+    endTime,
     appointmentsAllowed
   from dl_appointmentAvailabilityBlock
   where date(startTime) = pDate

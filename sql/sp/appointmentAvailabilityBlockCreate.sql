@@ -10,7 +10,8 @@ DELIMITER //
 
 /** appointmentAvailabilityBlockCreate
  * creates a block of time inside business hours in which appointments can't be made
- * or a block of time outside business hours in which appoints can be made
+ * or a block of time outside business hours in which appointments can be made.
+ * Returns the ID of the block just created.
  */
 create procedure dl_appointmentAvailabilityBlockCreate (
   in sTime datetime,
