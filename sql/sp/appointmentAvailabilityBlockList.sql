@@ -17,6 +17,7 @@ create procedure dl_appointmentAvailabilityBlockList (
 begin
 
   select
+    blockID,
     startTime,
     endTime,
     appointmentsAllowed
