@@ -12,13 +12,13 @@ DELIMITER //
  * deletes an appointment
  */
 create procedure dl_appointmentDelete (
-  in pAppointmentID int,
+  in pAppointmentID int
 )
 begin
 
   delete
   from dl_appointment
-  where appointmentID = pAppointmentID 
+  where appointmentID = pAppointmentID;
  
 end //
 

@@ -1,4 +1,4 @@
-Brief Docs for SPs
+ Brief Docs for SPs
 =================
 [appointmentAvailabilityBlockCreate](https://github.com/christophersecord/dana_lupo/blob/master/sql/sp/appointmentAvailabilityBlockCreate.sql)
 -------------------------
@@ -9,7 +9,7 @@ procedure
 * in pAppointmentsAllowed bit
 * out blockID int
 
-creates a block of time inside business hours in which appointments can't be made or a block of time outside business hours in which appoints can be made
+creates a block of time inside business hours in which appointments can't be made or a block of time outside business hours in which appointments can be made. Returns the ID of the block just created.
 [appointmentAvailabilityBlockDelete](https://github.com/christophersecord/dana_lupo/blob/master/sql/sp/appointmentAvailabilityBlockDelete.sql)
 -------------------------
 
@@ -50,6 +50,13 @@ procedure
 * in pAppointmentID int
 
 deletes an appointment
+[appointmentGet](https://github.com/christophersecord/dana_lupo/blob/master/sql/sp/appointmentGet.sql)
+-------------------------
+
+procedure
+* in pAppointmentID int
+
+returns a query containing all information about an appointment
 [appointmentList](https://github.com/christophersecord/dana_lupo/blob/master/sql/sp/appointmentList.sql)
 -------------------------
 
@@ -85,6 +92,41 @@ procedure
 * in openBlocks varchar(250)
 
 sets blocks of time when appointments are possible on a given day of week. openBlocks is a string of comma-delimited times in the format, HH:MM
+[clientCreate](https://github.com/christophersecord/dana_lupo/blob/master/sql/sp/clientCreate.sql)
+-------------------------
+
+procedure
+* in pEmailAddress varchar(250)
+* in plainTextPasswd varchar(250)
+* out clientID int
+
+creates a client
+[clientLogin](https://github.com/christophersecord/dana_lupo/blob/master/sql/sp/clientLogin.sql)
+-------------------------
+
+procedure
+* in pEmailAddress varchar(250)
+* in plainTextPasswd varchar(250)
+* out loginTokenString varchar(41)
+
+returns a loginTokenString (a combination of loginID at token) if a username/password matches a client
+[clientLogout](https://github.com/christophersecord/dana_lupo/blob/master/sql/sp/clientLogout.sql)
+-------------------------
+
+procedure
+* in loginTokenString varchar(41)
+
+logs out a client
+[clientReturn](https://github.com/christophersecord/dana_lupo/blob/master/sql/sp/clientReturn.sql)
+-------------------------
+
+procedure
+* in loginTokenString varchar(41)
+* out pClientID int
+* out pEmailAddress varchar(250)
+* out pLoginTime datetime
+
+when a client returns after an initial login, this procedure looks up their clientID and username given their login token
 [earliestAvailability](https://github.com/christophersecord/dana_lupo/blob/master/sql/sp/earliestAvailability.sql)
 -------------------------
 
