@@ -34,6 +34,7 @@
 	>
 		<cfargument name="blockDate" type="date"/>
 		
+		<cfset var q = 0/>
 		<cfstoredproc procedure="dl_appointmentAvailabilityBlockList" datasource="danalupo">
 			<cfprocparam value="#blockDate#" cfsqltype="cf_sql_date"/>
 			<cfprocresult name="q"/>
@@ -47,6 +48,7 @@
 	>
 		<cfargument name="appointmentDate" type="date"/>
 		
+		<cfset var q = 0/>
 		<cfstoredproc procedure="dl_appointmentList" datasource="danalupo">
 			<cfprocparam value="#appointmentDate#" cfsqltype="cf_sql_date"/>
 			<cfprocresult name="q"/>
@@ -55,6 +57,55 @@
 		<cfreturn q/>
 	</cffunction>
 
+	<cffunction name="availabilityGetBlocks" returntype="query"
+		hint="for a selected day, returns all available 30-minute time blocks"
+	>
+		<cfargument name="selectedDay" type="datetime"/>
+		
+		<cfset var q = 0/>
+		<cfstoredproc procedure="dl_availabilityGetBlocks" datasource="danalupo">
+			<cfprocparam value="#selectedDay#" cfsqltype="cf_sql_date"/>
+			<cfprocresult name="q"/>
+		</cfstoredproc>
+		
+		<cfreturn q/>
+	</cffunction>
+
+	<cffunction name="businessHoursList" returntype="query"
+		hint="for a selected day, returns the current business hours"
+	>
+		<cfargument name="dayOfWeek" type="numeric"/>
+		
+		<cfset var q = 0/>
+		<cfstoredproc procedure="dl_businessHoursList" datasource="danalupo">
+			<cfprocparam value="#dayOfWeek#" cfsqltype="cf_sql_integer"/>
+			<cfprocresult name="q"/>
+		</cfstoredproc>
+
+		<cfreturn q/>
+	</cffunction>
+
+	<cffunction name="businessHoursListDaysOfWeek" returntype="query"
+		hint="returns the days of the week (as int, Sunday=1) when appointments are possible"
+	>
+		
+		<cfset var q = 0/>
+		<cfstoredproc procedure="dl_businessHoursListDaysOfWeek" datasource="danalupo">
+			<cfprocresult name="q"/>
+		</cfstoredproc>
+
+		<cfreturn q/>
+	</cffunction>
+
+	<cffunction name="businessHoursSet" returntype="void">
+		<cfargument name="dayOfWeek" type="numeric"/>
+		<cfargument name="openBlocks" type="string"/>
+		
+		<cfstoredproc procedure="dl_businessHoursSet" datasource="danalupo">
+			<cfprocparam value="#dayOfWeek#" cfsqltype="cf_sql_integer"/>
+			<cfprocparam value="#openBlocks#" cfsqltype="cf_sql_varchar"/>
+		</cfstoredproc>
+	</cffunction>
 
 	<cffunction name="isAvailable" returntype="boolean">
 		<cfargument name="startTime" type="datetime"/>
@@ -86,16 +137,6 @@
 		</cfquery>
 
 		<cfreturn q.availability/>
-	</cffunction>
-	
-	<cffunction name="businessHoursSet" returntype="void">
-		<cfargument name="dayOfWeek" type="numeric"/>
-		<cfargument name="openBlocks" type="string"/>
-		
-		<cfstoredproc procedure="dl_businessHoursSet" datasource="danalupo">
-			<cfprocparam value="#dayOfWeek#" cfsqltype="cf_sql_integer"/>
-			<cfprocparam value="#openBlocks#" cfsqltype="cf_sql_varchar"/>
-		</cfstoredproc>
 	</cffunction>
 		
 	

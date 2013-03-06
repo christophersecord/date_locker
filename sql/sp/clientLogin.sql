@@ -9,36 +9,26 @@ drop procedure if exists dl_clientLogin;
 DELIMITER //
 
 /** clientLogin
- * returns a loginTokenString (a combination of loginID at token) if a username/password matches a client
+ * returns a loginTokenString (a combination of loginID at token) to record that a client has logged in
  */
 create procedure dl_clientLogin (
-  in pEmailAddress varchar(250),
-  in plainTextPasswd varchar(250),
+  in pClientID varchar(250),
 
   out loginTokenString varchar(41)
 )
 begin
 
-  declare pClientID int;
   declare pLoginID int;
   declare pLoginToken char(36);
 
-  select clientID
-  into pClientID
-  from dl_client
-  where emailAddress = pEmailAddress
-    and passwd = sha2(plainTextPasswd,224);
+  set pLoginToken = uuid();
 
-  if (pClientID is not null) then
-    set pLoginToken = uuid();
+  -- TODO: lookup client preferences for when logout will occur
+  insert dl_login (loginToken,clientID,loginTime,logOutTime)
+  values (pLoginToken,pClientID,now(),now());
 
-    -- TODO: set logout time in the future
-    insert dl_login (loginToken,clientID,loginTime,logOutTime)
-    values (pLoginToken,pClientID,now(),now());
+  set pLoginID = last_insert_id();
+  set loginTokenString = concat(pLoginID,',',pLoginToken);
 
-    set pLoginID = last_insert_id();
-    set loginTokenString = concat(pLoginID,',',pLoginToken);
-
-  end if;
 end //
 

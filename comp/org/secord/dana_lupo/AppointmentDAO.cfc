@@ -45,5 +45,18 @@
 		
 	</cffunction>
 
+	<cffunction name="appointmentGet" returntype="query"
+		hint="returns a query containing all information about an appointment"
+	>
+		<cfargument name="appointmentID" type="numeric"/>
+		
+		<cfstoredproc procedure="dl_appointmentGet" datasource="danalupo">
+			<cfprocparam value="#appointmentID#" cfsqltype="cf_sql_integer"/>
+			<cfprocresult name="q"/>
+		</cfstoredproc>
+		
+		<cfreturn q/>
+	</cffunction>
+
 
 </cfcomponent>
