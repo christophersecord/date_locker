@@ -9,18 +9,17 @@ drop procedure if exists dl_lockedAppointmentGet;
 DELIMITER //
 
 /** lockedAppointmentGet
- * gets info on a single locked appointment, identified by the lockToken
+ * gets info on a single locked appointment, identified by the lock Token String
  */
 create procedure dl_lockedAppointmentGet (
   in lockTokenStr varchar(46), 
   out pStart datetime, 
-  out pEnd datetime,
-  out pLockID int
+  out pEnd datetime
 )
 begin
 
-  select lockID, startTime, endTime
-  into pLockID, pStart, pEnd
+  select startTime, endTime
+  into pStart, pEnd
   from dl_appointmentLock
   where lockID = dl_listFirst(lockTokenStr)
     and lockToken = dl_listRest(lockTokenStr);
