@@ -6,7 +6,7 @@
 		<cfargument name="clientID" type="numeric"/>
 		
 		<cfset var q = 0/>
-		<cfstoredproc procedure="dl_clientCreate" datasource="danalupo">
+		<cfstoredproc procedure="dl_clientGet" datasource="danalupo">
 			<cfprocparam value="#clientID#" cfsqltype="cf_sql_integer"/>
 			<cfprocresult name="q"/>
 		</cfstoredproc>

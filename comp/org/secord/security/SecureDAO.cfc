@@ -27,6 +27,9 @@
 			<cfprocparam type="out" variable="clientID" cfsqltype="cf_sql_integer"/>
 		</cfstoredproc>
 		
+		<!--- SP returns null if the client doesn't exist --->
+		<cfif !isNumeric(clientID)><cfset clientID = 0/></cfif>
+		
 		<cfreturn clientID/>
 	</cffunction>
 
