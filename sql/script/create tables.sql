@@ -43,6 +43,8 @@ insert dl_config (varName,intVal) values ('apt_start_times',30);
 -- apt_lock_time determines how long an appointment can be locked before the lock is deleted.
 insert dl_config (varName,intVal) values ('apt_lock_time',720);
 
+-- TODO: new clients have XX minutes added to their appointment on the calendar (still pay for the number they select)
+
 /** client
  * @hint one row per client that has scheduled an appointment.
  */
@@ -50,6 +52,10 @@ create table dl_client (
   clientID int not null auto_increment primary key,
   emailAddress varchar(250) not null,
   passwd char(56) not null, -- stores SHA-2 hashes at 224 bits
+
+  phoneNumber char(10) null,
+
+  dateCreated timestamp not null default now(),
 
   unique(emailAddress)
 );
