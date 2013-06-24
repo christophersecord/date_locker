@@ -30,5 +30,11 @@
 		<cfreturn clientID/>
 	</cffunction>
 
+	<!--- TODO: make an SP for this --->
+ 	<cffunction name="clientUpdate" returntype="numeric"
+		hint="creates a client"
+	>
+		<cfargument name="clientID" type="numeric"/>
+	</cffunction>
 
 </cfcomponent>
