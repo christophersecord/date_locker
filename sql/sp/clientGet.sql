@@ -16,6 +16,7 @@ create procedure dl_clientGet (
 )
 begin
 
+  -- TODO: return the new columns that have been added to dl_client
   select c.emailAddress, l.loginTime, l.logoutTime
   from dl_client c
 
