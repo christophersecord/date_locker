@@ -18,6 +18,8 @@ create function dl_isAvailable (
 returns bit
 begin
 
+  -- pStart and pEnd are the argument start and end times without the day portion of the timestamp
+  -- for use in comparing to business hours
   declare pStart datetime
   default str_to_date(concat('1900-01-01 ',hour(aStartTime),':',minute(aStartTime)),'%Y-%m-%d %H:%i');
 
@@ -25,7 +27,14 @@ begin
   declare pEnd datetime 
   default date_add(str_to_date(concat('1900-01-01 ',hour(aEndTime),':',minute(aEndTime)),'%Y-%m-%d %H:%i'),interval -1 minute);
 
-  declare pStartTimeOffset int;
+  -- these variables are used to loop through the proposed appointment in minimum-sized time blocks (for 
+  -- example, 30-minute blocks), each of which is validated to make sure it its insie either a business hours
+  -- block or a special availability block
+  declare raStartTime datetime default aStartTime;
+  declare raEndTime datetime;
+  declare rpStartTime datetime default pStart;
+  declare rpEndTime datetime;
+  declare minAptInterval int;
 
   -- appointment must be far enough in advance
   if aStartTime < dl_earliestAvailability() then
@@ -38,11 +47,12 @@ begin
   end if;
 
   -- startTime must start on an hour or half-hour boundry (as defined by the config variable)
-  select minute(aStartTime)%intVal
-  into pStartTimeOffset
-  from dl_config where varName='apt_start_times';
-
-  if pStartTimeOffset != 0 then
+  if not exists (
+    select *
+    from dl_config
+    where varName = 'apt_start_times'
+      and minute(aStartTime)%intVal = 0
+  ) then
     return 0;
   end if;
 
@@ -55,28 +65,82 @@ begin
     return 0;
   end if;
 
-  -- appointment must be on an allowed time block
-  if (
+  -- if there is a special availability block on the same day,
+  -- and the appointment is not the smallest allowable duration
+  if exists (
 
-    exists (
-      -- the appointment is inside normal business hours
+    -- special availability block on the same day
+    select * from dl_appointmentAvailabilityBlock
+    where
+      appointmentsAllowed = 1
+      and dateDiff(aStartTime,startTime) = 0
+
+      -- the appointment is not the smallest allowable duration
+      and time_to_sec(timeDiff(aEndTime,aStartTime))/60 <> (select min(minutes) from dl_appointmentduration)
+
+  ) then
+
+    -- what is the minimum appointment size (typically it's a 30-minute appointment)
+    select min(minutes) into minAptInterval from dl_appointmentDuration;
+
+    -- loop through all possible minimum appointments that fit into the real appointment
+    while (raStartTime < aEndTime) do
+
+      -- create appointments of that size
+      set raEndTime = date_add(raStartTime, interval minAptInterval minute);
+      set rpEndTime = date_add(rpStartTime, interval minAptInterval minute);
+
+      if not exists (
+        -- is the appointment entirely inside a business hours block
+        select *
+        from dl_businessHours
+        where
+          startAvailability <= rpStartTime
+          and endAvailability >= rpEndTime
+          and dayOfWeek = dayOfWeek(aStartTime)
+      ) and not exists (
+        -- is the appointment entirely inside a special availability block
+        select * from dl_appointmentAvailabilityBlock
+        where
+          appointmentsAllowed = 1
+          and startTime <= raStartTime and raEndTime <= endTime
+
+      ) then
+        return 0;
+      end if;
+
+      -- loop by minAptInterval minutes
+      set raStartTime = date_add(raStartTime, interval minAptInterval minute);
+      set rpStartTime = date_add(rpStartTime, interval minAptInterval minute);
+      
+    end while;
+
+  -- there's no special availability block on this day or the appointment is the smallest possible duration,
+  -- use the simpler business hours check
+  else
+
+    if not exists (
+      -- is the appointment entirely inside a business hours block
       select *
       from dl_businessHours
       where
         startAvailability <= pStart
         and endAvailability >= pEnd
         and dayOfWeek = dayOfWeek(aStartTime)
-
-    ) or exists (
-      -- the appointment is inside a designated availability block
-      -- TODO: this code and the business hours code needs to be combined
+    ) and not exists (
+      -- is the appointment entirely inside a special availability block
       select * from dl_appointmentAvailabilityBlock
       where
         appointmentsAllowed = 1
         and startTime <= aStartTime and aEndTime <= endTime
-    )
 
-  ) and not exists (
+    ) then
+      return 0;
+    end if;
+
+  end if;
+
+  if not exists (
     -- is there no other appointment that conflicts with it
     select * from dl_appointment
     where
