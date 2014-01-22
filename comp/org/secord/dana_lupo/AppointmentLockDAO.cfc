@@ -16,6 +16,7 @@
 		<cfreturn lockTokenString/>
 	</cffunction>
 
+	<!--- TODO: this is calling the wrong SP!! --->
 	<cffunction name="lockedAppointmentGet" returntype="struct"
 		hint="gets info on a single locked appointment, identified by the lock Token String. returns a struct containing exists,StartTime,EndTime"
 	>

@@ -1,5 +1,7 @@
 /**
  * for those tests that use railo, sets up the server environment such as the path to frameworks
+ * individual tests are run sort of like this (on my machine anyway):
+ * http://localhost/dl/test/script/sp/clientcreate.cfc?method=runtestremote
  */
 component {
 	this.name="unittests";
