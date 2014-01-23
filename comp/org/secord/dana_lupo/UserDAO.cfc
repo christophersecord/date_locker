@@ -14,6 +14,22 @@
 		<cfreturn q/>
 	</cffunction>
 
+	<cffunction name="clientExists" returntype="boolean"
+		hint="returns true if a client, identified by a username, exists"
+	>
+		<cfargument name="emailAddress" type="string"/>
+
+		<cfset var q = 0/>
+
+		<cfquery name="q" datasource="danalupo">
+			select dl_clientExists(
+				<cfqueryparam value="#emailAddress#" cfsqltype="cf_sql_varchar"/>
+			) as clientExists
+		</cfquery>
+
+		<cfreturn q.clientExists/>
+	</cffunction>
+
  	<cffunction name="clientCreate" returntype="numeric"
 		hint="creates a client"
 	>
@@ -32,7 +48,7 @@
 
 	<!--- TODO: make an SP for this --->
  	<cffunction name="clientUpdate" returntype="numeric"
-		hint="creates a client"
+		hint="updates a client's info"
 	>
 		<cfargument name="clientID" type="numeric"/>
 	</cffunction>

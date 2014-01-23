@@ -1,19 +1,5 @@
 <cfcomponent>
 
-	<cffunction name="clientExists" returntype="boolean">
-		<cfargument name="emailAddress" type="string"/>
-		
-		<cfset var q = 0/>
-
-		<cfquery name="q" datasource="danalupo">
-			select dl_clientExists(
-				<cfqueryparam value="#emailAddress#" cfsqltype="cf_sql_varchar"/>
-			) as clientExists
-		</cfquery>
-
-		<cfreturn q.clientExists/>
-	</cffunction>
-
 	<cffunction name="clientAuthenticate" returntype="string"
 		hint="checks a username/password and returns the corresponding client if found"
 	>
