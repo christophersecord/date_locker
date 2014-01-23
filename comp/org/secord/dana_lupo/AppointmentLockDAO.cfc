@@ -16,22 +16,25 @@
 		<cfreturn lockTokenString/>
 	</cffunction>
 
-	<!--- TODO: this is calling the wrong SP!! --->
 	<cffunction name="lockedAppointmentGet" returntype="struct"
 		hint="gets info on a single locked appointment, identified by the lock Token String. returns a struct containing exists,StartTime,EndTime"
 	>
 		<cfargument name="lockTokentString" type="string"/>
 
 		<cfset var tmpResult = structNew()/>
-		<cfset tmpResult.exists = false/>
+		<cfset tmpResult.startTime = ""/>
+		<cfset tmpResult.endTime = ""/>
 		
-		<cfstoredproc procedure="dl_lockAppointment" datasource="danalupo">
+		<cfstoredproc procedure="dl_lockAppointmentGet" datasource="danalupo">
 			<cfprocparam value="#lockTokenString#" cfsqltype="cf_sql_varchar"/>
 
 			<cfprocparam type="out" variable="#tmpResult.startTime#" cfsqltype="cf_sql_timestamp"/>
 			<cfprocparam type="out" variable="#tmpResult.endTime#" cfsqltype="cf_sql_timestamp"/>
 		</cfstoredproc>
 
+		<cfset tmpResult.exists = isDate(tmpResult.startTime)/>
+
+		<cfreturn tmpResult/>
 	</cffunction>
 
 	<cffunction name="lockedAppointmentDelete" returntype="void"
