@@ -25,7 +25,7 @@ request.comproot = "dl.comp";
 public void function beforeTests() {
 
 	// DAO objects to be tested
-	userDAO = createObject("component",request.compRoot & ".org.secord.dana_lupo.UserDAO");
+	clientDAO = createObject("component",request.compRoot & ".org.secord.dana_lupo.clientDAO");
 	securityDAO = createObject("component",request.compRoot & ".org.secord.dana_lupo.SecureDAO");
 	appointmentDAO = createObject("component",request.compRoot & ".org.secord.dana_lupo.AppointmentDAO");
 	calendarDAO = createObject("component",request.compRoot & ".org.secord.dana_lupo.CalendarDAO");
@@ -144,13 +144,13 @@ public void function setup() {
  */
 
 /**
- * creates a user
- * when each test runs, there will be no users in the DB. Tests will call this method to quickly
- * create a user to test with.
+ * creates a client
+ * when each test runs, there will be no clients in the DB. Tests will call this method to quickly
+ * create a client to test with.
  */
 private numeric function createClient(string email="clientID1@email.com", string password="1234") {
 
-	return userDAO.clientCreate(email,password);
+	return clientDAO.clientCreate(email,password);
 }
 
 /**
