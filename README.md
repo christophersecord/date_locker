@@ -1,4 +1,4 @@
-dana_lupo
-=========
+Date Locker
+===========
 
-code for dana's site
+a utility to manage appointments for a service provider that has set hours plus manually-created special availability windows.
