@@ -16,28 +16,28 @@ public void function beforeTests() {
 
 	// clear all appointment Durations
 	var q = new Query();
-	q.setDataSource("danalupo");
+	q.setDataSource("dl");
 	q.setSQL("delete from dl_appointmentDuration");
 	q = q.execute();
 
 	// for testing, allow 30, 60, 90, and 120 minute appointments
 	var q = new Query();
-	q.setDataSource("danalupo");
+	q.setDataSource("dl");
 	q.setSQL("insert dl_appointmentDuration values (30)");
 	q = q.execute();
 
 	var q = new Query();
-	q.setDataSource("danalupo");
+	q.setDataSource("dl");
 	q.setSQL("insert dl_appointmentDuration values (60)");
 	q = q.execute();
 
 	var q = new Query();
-	q.setDataSource("danalupo");
+	q.setDataSource("dl");
 	q.setSQL("insert dl_appointmentDuration values (90)");
 	q = q.execute();
 
 	var q = new Query();
-	q.setDataSource("danalupo");
+	q.setDataSource("dl");
 	q.setSQL("insert dl_appointmentDuration values (120)");
 	q = q.execute();
 
@@ -45,7 +45,7 @@ public void function beforeTests() {
 	// otherwise, if tests are run after 6:00 PM, they will fail
 	var plusOneHour = "01-01-1900 " & timeFormat(dateAdd("h",1,now()),"HH:MM");
 	var q = new Query();
-	q.setDataSource("danalupo");
+	q.setDataSource("dl");
 	q.setSQL("
 		update dl_config
 		set dateVal = :plusOneHour
@@ -64,37 +64,37 @@ public void function beforeTests() {
 public void function setup() {
 	// dl_businessHours
 	var q = new Query();
-	q.setDataSource("danalupo");
+	q.setDataSource("dl");
 	q.setSQL("delete from dl_businessHours");
 	q = q.execute();
 
 	// dl_appointmentAvailabilityBlock
 	var q = new Query();
-	q.setDataSource("danalupo");
+	q.setDataSource("dl");
 	q.setSQL("delete from dl_appointmentAvailabilityBlock");
 	q = q.execute();
 
 	// dl_appointmentLock
 	var q = new Query();
-	q.setDataSource("danalupo");
+	q.setDataSource("dl");
 	q.setSQL("delete from dl_appointmentLock");
 	q = q.execute();
 
 	// dl_appointment
 	var q = new Query();
-	q.setDataSource("danalupo");
+	q.setDataSource("dl");
 	q.setSQL("delete from dl_appointment");
 	q = q.execute();
 
 	// dl_login
 	var q = new Query();
-	q.setDataSource("danalupo");
+	q.setDataSource("dl");
 	q.setSQL("delete from dl_login");
 	q = q.execute();
 
 	// dl_client
 	var q = new Query();
-	q.setDataSource("danalupo");
+	q.setDataSource("dl");
 	q.setSQL("delete from dl_client");
 	q = q.execute();
 

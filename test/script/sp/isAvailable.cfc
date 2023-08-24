@@ -77,7 +77,7 @@ public void function beforeTests() {
 	// set business hours, availability hours, and an appointment for test days
 	/*
 	var q = new Query();
-	q.setDataSource("danalupo");
+	q.setDataSource("dl");
 	q.setSQL("
 		insert into dl_businessHours (dayOfWeek,startAvailability,endAvailability)
 		values (
@@ -125,7 +125,7 @@ public void function beforeTests() {
 	var sTime = dateFormat(variables.days.Day3.calDate,"yyyy-mm-dd")&" "&listFirst(variables.days.Day3.ExistingAppointment1);
 	var eTime = dateFormat(variables.days.Day3.calDate,"yyyy-mm-dd")&" "&listLast(variables.days.Day3.ExistingAppointment1);
 	var q = new Query();
-	q.setDataSource("danalupo");
+	q.setDataSource("dl");
 	q.setSQL("
 		insert into dl_client (emailAddress,passwd)
 		values ('1','1')
@@ -219,7 +219,7 @@ private void function doAssert(dayID,appointmentID) {
 private boolean function isAvailable(aStartTime,aEndTime) {
 
 	var q = new Query();
-	q.setDataSource("danalupo");
+	q.setDataSource("dl");
 	q.setSQL("
 		select dl_isAvailable(
 			:aStartTime,
@@ -241,7 +241,7 @@ private boolean function isAvailable(aStartTime,aEndTime) {
 private string function isAvailableReason(aStartTime,aEndTime) {
 
 	var q = new Query();
-	q.setDataSource("danalupo");
+	q.setDataSource("dl");
 	q.setSQL("
 		select dl_isAvailableReason(
 			:aStartTime,
