@@ -7,7 +7,7 @@
 		<cfargument name="passwd" type="string"/>
 		
 		<cfset var clientID = 0/>
-		<cfstoredproc procedure="dl_clientAuthenticate" datasource="danalupo">
+		<cfstoredproc procedure="dl_clientAuthenticate" datasource="dl">
 			<cfprocparam value="#emailAddress#" cfsqltype="cf_sql_varchar"/>
 			<cfprocparam value="#passwd#" cfsqltype="cf_sql_varchar"/>
 			<cfprocparam type="out" variable="clientID" cfsqltype="cf_sql_integer"/>
@@ -25,7 +25,7 @@
 		<cfargument name="clientID" type="numeric"/>
 		
 		<cfset var loginTokenString = ""/>
-		<cfstoredproc procedure="dl_clientLogin" datasource="danalupo">
+		<cfstoredproc procedure="dl_clientLogin" datasource="dl">
 			<cfprocparam value="#clientID#" cfsqltype="cf_sql_integer"/>
 			<cfprocparam type="out" variable="loginTokenString" cfsqltype="cf_sql_varchar"/>
 		</cfstoredproc>
@@ -40,7 +40,7 @@
 		
 		<cfset var clientID = 0/>
 		<cfset var loginTime = ""/>
-		<cfstoredproc procedure="dl_clientReturn" datasource="danalupo">
+		<cfstoredproc procedure="dl_clientReturn" datasource="dl">
 			<cfprocparam value="#loginTokenString#" cfsqltype="cf_sql_varchar"/>
 			<cfprocparam type="out" variable="clientID" cfsqltype="cf_sql_integer"/>
 			<cfprocparam type="out" variable="loginTime" cfsqltype="cf_sql_datetime"/>
@@ -54,7 +54,7 @@
 	>
 		<cfargument name="loginTokenString" type="string"/>
 		
-		<cfstoredproc procedure="dl_clientLogout" datasource="danalupo">
+		<cfstoredproc procedure="dl_clientLogout" datasource="dl">
 			<cfprocparam value="#loginTokenString#" cfsqltype="cf_sql_varchar"/>
 		</cfstoredproc>
 		

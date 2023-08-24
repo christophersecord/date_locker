@@ -11,14 +11,14 @@
 	<cfset var clientEmail = "validEmail@domain.com"/>
 
 	<!--- client doesn't yet exist --->
-	<cfquery name="q" datasource="danalupo">
+	<cfquery name="q" datasource="dl">
 		select * from dl_client
 		where emailAddress = <cfqueryparam value="#clientEmail#" cfsqltype="cf_sql_varchar"/>
 	</cfquery>
 	<cfset assert(q.recordCount eq 0,"client doesn't yet exist")/>
 
 	<!--- create client --->
-	<cfstoredproc procedure="dl_clientCreate" datasource="danalupo">
+	<cfstoredproc procedure="dl_clientCreate" datasource="dl">
 		<cfprocparam value="#clientEmail#" cfsqltype="cf_sql_varchar"/>
 		<cfprocparam value="passwd" cfsqltype="cf_sql_varchar"/>
 		<cfprocparam type="out" variable="clientID" cfsqltype="cf_sql_integer"/>
@@ -27,7 +27,7 @@
 	<cfset assertTrue(isNumeric(clientID),"clientID is numeric")/>
 
 	<!--- client exists --->
-	<cfquery name="q" datasource="danalupo">
+	<cfquery name="q" datasource="dl">
 		select * from dl_client
 		where emailAddress = <cfqueryparam value="#clientEmail#" cfsqltype="cf_sql_varchar"/>
 	</cfquery>
@@ -46,7 +46,7 @@
 	<cfset var encryptedPasswd = ""/>
 
 	<!--- create the client --->
-	<cfstoredproc procedure="dl_clientCreate" datasource="danalupo">
+	<cfstoredproc procedure="dl_clientCreate" datasource="dl">
 		<cfprocparam value="#clientEmail#" cfsqltype="cf_sql_varchar"/>
 		<cfprocparam value="passwd" cfsqltype="cf_sql_varchar"/>
 		<cfprocparam type="out" variable="clientID" cfsqltype="cf_sql_integer"/>
@@ -55,14 +55,14 @@
 	<cfset assertTrue(isNumeric(clientID),"clientID is valid")/>
 
 	<!--- lookup the encrypted password --->
-	<cfquery name="q" datasource="danalupo">
+	<cfquery name="q" datasource="dl">
 		select * from dl_client
 		where clientID = <cfqueryparam value="#clientID#" cfsqltype="cf_sql_integer"/>
 	</cfquery>
 	<cfset encryptedPasswd = q.passwd/>
 
 	<!--- creating a duplicate client should fail --->
-	<cfstoredproc procedure="dl_clientCreate" datasource="danalupo">
+	<cfstoredproc procedure="dl_clientCreate" datasource="dl">
 		<cfprocparam value="#clientEmail#" cfsqltype="cf_sql_varchar"/>
 		<cfprocparam value="a different passwd" cfsqltype="cf_sql_varchar"/>
 		<cfprocparam type="out" variable="clientID" cfsqltype="cf_sql_integer"/>
@@ -71,7 +71,7 @@
 	<cfset assertFalse(isNumeric(clientID),"clientID is not valid")/>
 
 	<!--- check that the password wasn't overridden --->
-	<cfquery name="q" datasource="danalupo">
+	<cfquery name="q" datasource="dl">
 		select * from dl_client
 		where emailAddress = <cfqueryparam value="#clientEmail#" cfsqltype="cf_sql_varchar"/>
 	</cfquery>

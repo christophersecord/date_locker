@@ -8,7 +8,7 @@
 		<cfargument name="appointmentsAllowed" type="boolean" default="false"/>
 		
 		<cfset var blockID = 0/>
-		<cfstoredproc procedure="dl_appointmentAvailabilityBlockCreate" datasource="danalupo">
+		<cfstoredproc procedure="dl_appointmentAvailabilityBlockCreate" datasource="dl">
 			<cfprocparam value="#startTime#" cfsqltype="cf_sql_timestamp"/>
 			<cfprocparam value="#endTime#" cfsqltype="cf_sql_timestamp"/>
 			<cfprocparam value="#appointmentsAllowed#" cfsqltype="cf_sql_bit"/>
@@ -23,7 +23,7 @@
 	>
 		<cfargument name="blockID" type="numeric"/>
 		
-		<cfstoredproc procedure="dl_appointmentAvailabilityBlockDelete" datasource="danalupo">
+		<cfstoredproc procedure="dl_appointmentAvailabilityBlockDelete" datasource="dl">
 			<cfprocparam value="#blockID#" cfsqltype="cf_sql_integer"/>
 		</cfstoredproc>
 		
@@ -35,7 +35,7 @@
 		<cfargument name="blockDate" type="date"/>
 		
 		<cfset var q = 0/>
-		<cfstoredproc procedure="dl_appointmentAvailabilityBlockList" datasource="danalupo">
+		<cfstoredproc procedure="dl_appointmentAvailabilityBlockList" datasource="dl">
 			<cfprocparam value="#blockDate#" cfsqltype="cf_sql_date"/>
 			<cfprocresult name="q"/>
 		</cfstoredproc>
@@ -49,7 +49,7 @@
 		<cfargument name="appointmentDate" type="date"/>
 		
 		<cfset var q = 0/>
-		<cfstoredproc procedure="dl_appointmentList" datasource="danalupo">
+		<cfstoredproc procedure="dl_appointmentList" datasource="dl">
 			<cfprocparam value="#appointmentDate#" cfsqltype="cf_sql_date"/>
 			<cfprocresult name="q"/>
 		</cfstoredproc>
@@ -63,7 +63,7 @@
 		<cfargument name="selectedDay" type="datetime"/>
 		
 		<cfset var q = 0/>
-		<cfstoredproc procedure="dl_availabilityGetBlocks" datasource="danalupo">
+		<cfstoredproc procedure="dl_availabilityGetBlocks" datasource="dl">
 			<cfprocparam value="#selectedDay#" cfsqltype="cf_sql_date"/>
 			<cfprocresult name="q"/>
 		</cfstoredproc>
@@ -77,7 +77,7 @@
 		<cfargument name="dayOfWeek" type="numeric"/>
 		
 		<cfset var q = 0/>
-		<cfstoredproc procedure="dl_businessHoursList" datasource="danalupo">
+		<cfstoredproc procedure="dl_businessHoursList" datasource="dl">
 			<cfprocparam value="#dayOfWeek#" cfsqltype="cf_sql_integer"/>
 			<cfprocresult name="q"/>
 		</cfstoredproc>
@@ -90,7 +90,7 @@
 	>
 		
 		<cfset var q = 0/>
-		<cfstoredproc procedure="dl_businessHoursListDaysOfWeek" datasource="danalupo">
+		<cfstoredproc procedure="dl_businessHoursListDaysOfWeek" datasource="dl">
 			<cfprocresult name="q"/>
 		</cfstoredproc>
 
@@ -101,7 +101,7 @@
 		<cfargument name="dayOfWeek" type="numeric"/>
 		<cfargument name="openBlocks" type="string"/>
 		
-		<cfstoredproc procedure="dl_businessHoursSet" datasource="danalupo">
+		<cfstoredproc procedure="dl_businessHoursSet" datasource="dl">
 			<cfprocparam value="#dayOfWeek#" cfsqltype="cf_sql_integer"/>
 			<cfprocparam value="#openBlocks#" cfsqltype="cf_sql_varchar"/>
 		</cfstoredproc>
@@ -113,7 +113,7 @@
 		
 		<cfset var q = 0/>
 
-		<cfquery name="q" datasource="danalupo">
+		<cfquery name="q" datasource="dl">
 			select dl_isAvailable(
 				<cfqueryparam value="#startTime#" cfsqltype="cf_sql_timestamp"/>,
 				<cfqueryparam value="#endTime#" cfsqltype="cf_sql_timestamp"/>
@@ -129,7 +129,7 @@
 		
 		<cfset var q = 0/>
 
-		<cfquery name="q" datasource="danalupo">
+		<cfquery name="q" datasource="dl">
 			select dl_isAvailableReason(
 				<cfqueryparam value="#startTime#" cfsqltype="cf_sql_timestamp"/>,
 				<cfqueryparam value="#endTime#" cfsqltype="cf_sql_timestamp"/>

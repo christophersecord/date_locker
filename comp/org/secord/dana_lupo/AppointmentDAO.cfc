@@ -8,7 +8,7 @@
 		<cfargument name="endTime" type="datetime"/>
 		
 		<cfset var appointmentID = 0/>
-		<cfstoredproc procedure="dl_appointmentCreate" datasource="danalupo">
+		<cfstoredproc procedure="dl_appointmentCreate" datasource="dl">
 			<cfprocparam value="#clientID#" cfsqltype="cf_sql_integer"/>
 			<cfprocparam value="#startTime#" cfsqltype="cf_sql_timestamp"/>
 			<cfprocparam value="#endTime#" cfsqltype="cf_sql_timestamp"/>
@@ -25,7 +25,7 @@
 		<cfargument name="clientID" type="numeric"/>
 		
 		<cfset var appointmentID = 0/>
-		<cfstoredproc procedure="dl_appointmentCreateFromLock" datasource="danalupo">
+		<cfstoredproc procedure="dl_appointmentCreateFromLock" datasource="dl">
 			<cfprocparam value="#lockTokenString#" cfsqltype="cf_sql_char"/>
 			<cfprocparam value="#clientID#" cfsqltype="cf_sql_integer"/>
 			<cfprocparam type="out" variable="appointmentID" cfsqltype="cf_sql_integer"/>
@@ -39,7 +39,7 @@
 	>
 		<cfargument name="appointmentID" type="numeric"/>
 		
-		<cfstoredproc procedure="dl_appointmentDelete" datasource="danalupo">
+		<cfstoredproc procedure="dl_appointmentDelete" datasource="dl">
 			<cfprocparam value="#appointmentID#" cfsqltype="cf_sql_integer"/>
 		</cfstoredproc>
 		
@@ -50,7 +50,7 @@
 	>
 		<cfargument name="appointmentID" type="numeric"/>
 		
-		<cfstoredproc procedure="dl_appointmentGet" datasource="danalupo">
+		<cfstoredproc procedure="dl_appointmentGet" datasource="dl">
 			<cfprocparam value="#appointmentID#" cfsqltype="cf_sql_integer"/>
 			<cfprocresult name="q"/>
 		</cfstoredproc>

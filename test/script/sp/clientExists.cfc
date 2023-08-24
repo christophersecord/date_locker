@@ -11,7 +11,7 @@
 	<cfset var clientEmail = "validEmail@domain.com"/>
 
 	<!--- client doesn't yet exist --->
-	<cfquery name="q" datasource="danalupo">
+	<cfquery name="q" datasource="dl">
 		select dl_clientExists('#clientEmail#') as clientExists
 	</cfquery>
 	<cfset assertFalse(q.clientExists,"client doesn't yet exist")/>
@@ -25,20 +25,20 @@
 	<cfset var clientEmail = "validEmail@domain.com"/>
 
 	<!--- client doesn't yet exist --->
-	<cfquery name="q" datasource="danalupo">
+	<cfquery name="q" datasource="dl">
 		select dl_clientExists('#clientEmail#') as clientExists
 	</cfquery>
 	<cfset assertFalse(q.clientExists,"client doesn't yet exist")/>
 
 	<!--- create client --->
-	<cfstoredproc procedure="dl_clientCreate" datasource="danalupo">
+	<cfstoredproc procedure="dl_clientCreate" datasource="dl">
 		<cfprocparam value="#clientEmail#" cfsqltype="cf_sql_varchar"/>
 		<cfprocparam value="passwd" cfsqltype="cf_sql_varchar"/>
 		<cfprocparam type="out" variable="clientID" cfsqltype="cf_sql_integer"/>
 	</cfstoredproc>
 
 	<!--- client now exists --->
-	<cfquery name="q" datasource="danalupo">
+	<cfquery name="q" datasource="dl">
 		select dl_clientExists('#clientEmail#') as clientExists
 	</cfquery>
 	<cfset assertTrue(q.clientExists,"client now exists")/>

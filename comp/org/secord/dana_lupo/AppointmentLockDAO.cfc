@@ -7,7 +7,7 @@
 		<cfargument name="endTime" type="datetime"/>
 		
 		<cfset var lockTokenString = ""/>
-		<cfstoredproc procedure="dl_lockAppointment" datasource="danalupo">
+		<cfstoredproc procedure="dl_lockAppointment" datasource="dl">
 			<cfprocparam value="#startTime#" cfsqltype="cf_sql_timestamp"/>
 			<cfprocparam value="#endTime#" cfsqltype="cf_sql_timestamp"/>
 			<cfprocparam type="out" variable="lockTokenString" cfsqltype="cf_sql_varchar"/>
@@ -25,7 +25,7 @@
 		<cfset tmpResult.startTime = ""/>
 		<cfset tmpResult.endTime = ""/>
 		
-		<cfstoredproc procedure="dl_lockAppointmentGet" datasource="danalupo">
+		<cfstoredproc procedure="dl_lockAppointmentGet" datasource="dl">
 			<cfprocparam value="#lockTokenString#" cfsqltype="cf_sql_varchar"/>
 
 			<cfprocparam type="out" variable="#tmpResult.startTime#" cfsqltype="cf_sql_timestamp"/>
@@ -42,7 +42,7 @@
 	>
 		<cfargument name="lockTokentString" type="string"/>
 	
-		<cfstoredproc procedure="dl_lockedAppointmentDelete" datasource="danalupo">
+		<cfstoredproc procedure="dl_lockedAppointmentDelete" datasource="dl">
 			<cfprocparam value="#lockTokenString#" cfsqltype="cf_sql_varchar"/>
 		</cfstoredproc>
 	</cffunction>
@@ -50,7 +50,7 @@
 	<cffunction name="lockCleanup" returntype="void"
 		hint="deletes timed-out locks. Truncates the table (for performance reasons) if no valid locks remain"
 	>
-		<cfstoredproc procedure="dl_lockCleanup" datasource="danalupo"/>
+		<cfstoredproc procedure="dl_lockCleanup" datasource="dl"/>
 	</cffunction>
 
 </cfcomponent>

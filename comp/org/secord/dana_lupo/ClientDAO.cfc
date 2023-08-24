@@ -6,7 +6,7 @@
 		<cfargument name="clientID" type="numeric"/>
 		
 		<cfset var q = 0/>
-		<cfstoredproc procedure="dl_clientGet" datasource="danalupo">
+		<cfstoredproc procedure="dl_clientGet" datasource="dl">
 			<cfprocparam value="#clientID#" cfsqltype="cf_sql_integer"/>
 			<cfprocresult name="q"/>
 		</cfstoredproc>
@@ -21,7 +21,7 @@
 
 		<cfset var q = 0/>
 
-		<cfquery name="q" datasource="danalupo">
+		<cfquery name="q" datasource="dl">
 			select dl_clientExists(
 				<cfqueryparam value="#emailAddress#" cfsqltype="cf_sql_varchar"/>
 			) as clientExists
@@ -37,7 +37,7 @@
 		<cfargument name="passwd" type="string"/>
 		
 		<cfset var clientID = 0/>
-		<cfstoredproc procedure="dl_clientCreate" datasource="danalupo">
+		<cfstoredproc procedure="dl_clientCreate" datasource="dl">
 			<cfprocparam value="#emailAddress#" cfsqltype="cf_sql_varchar"/>
 			<cfprocparam value="#passwd#" cfsqltype="cf_sql_varchar"/>
 			<cfprocparam type="out" variable="clientID" cfsqltype="cf_sql_integer"/>
