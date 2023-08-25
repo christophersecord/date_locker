@@ -1,4 +1,4 @@
-/** base tables for dana_lupo project
+/** base tables for date_locker project
  * @author christophersecord
  * @date 20130203
  * @language SQL

@@ -1,4 +1,4 @@
-/** the functions used to process lists of strings for dana_lupo project
+/** the functions used to process lists of strings for date_locker project
  * @author christophersecord
  * @date 20130319
  * @language SQL

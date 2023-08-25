@@ -1,4 +1,4 @@
-/** stored procedure for dana_lupo project
+/** stored procedure for date_locker project
  * @author christophersecord
  * @date 20130305
  * @language SQL

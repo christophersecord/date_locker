@@ -1,4 +1,4 @@
-/** function for dana_lupo project
+/** function for date_locker project
  * @author christophersecord
  * @date 20130305
  * @language SQL

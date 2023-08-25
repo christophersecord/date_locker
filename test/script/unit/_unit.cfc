@@ -1,5 +1,5 @@
 /**
- * unit tests for dana_lupo project, testing data access objects
+ * unit tests for date_locker project, testing data access objects
  *
  * requires the mxUnit framework installed under mxunit.framework
  * http://localhost/dl/test/unit/DAO.cfc?method=runtestremote&output=html
@@ -25,11 +25,11 @@ request.comproot = "dl.comp";
 public void function beforeTests() {
 
 	// DAO objects to be tested
-	clientDAO = createObject("component",request.compRoot & ".org.secord.dana_lupo.clientDAO");
-	securityDAO = createObject("component",request.compRoot & ".org.secord.dana_lupo.SecureDAO");
-	appointmentDAO = createObject("component",request.compRoot & ".org.secord.dana_lupo.AppointmentDAO");
-	calendarDAO = createObject("component",request.compRoot & ".org.secord.dana_lupo.CalendarDAO");
-	appointmentLockDAO = createObject("component",request.compRoot & ".org.secord.dana_lupo.AppointmentLockDAO");
+	clientDAO = createObject("component",request.compRoot & ".org.secord.date_locker.clientDAO");
+	securityDAO = createObject("component",request.compRoot & ".org.secord.date_locker.SecureDAO");
+	appointmentDAO = createObject("component",request.compRoot & ".org.secord.date_locker.AppointmentDAO");
+	calendarDAO = createObject("component",request.compRoot & ".org.secord.date_locker.CalendarDAO");
+	appointmentLockDAO = createObject("component",request.compRoot & ".org.secord.date_locker.AppointmentLockDAO");
 
 	// business hours time block
 	tbBusinessHours = "10:00,12:00,13:00,16:00";

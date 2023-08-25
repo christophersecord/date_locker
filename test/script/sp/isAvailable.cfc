@@ -92,7 +92,7 @@ public void function beforeTests() {
 	q = q.execute().getResult();
 	*/
 
-	calendarDAO = createObject("component","dl.comp.org.secord.dana_lupo.CalendarDAO");
+	calendarDAO = createObject("component","dl.comp.org.secord.date_locker.CalendarDAO");
 
 	calendarDAO.businessHoursSet(dayOfWeek(variables.days.Day1.calDate),variables.days.Day1.BusinessHours);
 	calendarDAO.appointmentAvailabilityBlockCreate(
