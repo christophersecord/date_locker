@@ -15,6 +15,7 @@ DELIMITER //
  */
 create function dl_listLen (list varchar(250))
 returns int
+deterministic
 begin
 
   declare i int default 0;
@@ -40,6 +41,7 @@ end //
 -- TODO: should skip empty items or leading "," as in, ",one,two"
 create function dl_listFirst (list varchar(250))
 returns varchar(250)
+deterministic
 begin
 
   if locate(',',list) = 0 then
@@ -55,6 +57,7 @@ end //
  */
 create function dl_listRest (list varchar(250))
 returns varchar(250)
+deterministic
 begin
 
   if locate(',',list) = 0 then

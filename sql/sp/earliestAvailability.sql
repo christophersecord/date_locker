@@ -14,6 +14,7 @@ DELIMITER //
  */
 create function dl_earliestAvailability ()
 returns datetime
+reads sql data
 begin
 
   declare availabilityDate datetime

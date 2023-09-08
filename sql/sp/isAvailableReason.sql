@@ -13,6 +13,7 @@ DELIMITER //
  */
 create function dl_isAvailableReason (aStartTime datetime, aEndTime datetime)
 returns varchar(100)
+reads sql data
 begin
 
   declare pStart datetime
@@ -34,7 +35,7 @@ begin
   end if;
 
   -- end time must be greater than start time and be on the same day
-  if (aEndTime <= aStartTime) || (day(aStartTime) != day(aEndTime)) then
+  if (aEndTime <= aStartTime) or (day(aStartTime) != day(aEndTime)) then
     return 'invalid timespan';
   end if;
 

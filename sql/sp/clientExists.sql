@@ -15,6 +15,7 @@ create function dl_clientExists (
 	pEmailAddress varchar(250)
 )
 returns bit
+reads sql data
 begin
 
   if exists (

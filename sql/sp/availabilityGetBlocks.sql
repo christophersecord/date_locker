@@ -19,7 +19,7 @@ begin
   declare aptInterval int;
   select min(minutes)
   into aptInterval
-  from dl_appointmentDuration
+  from dl_appointmentDuration;
 
   create temporary table availability (
     startTime datetime not null

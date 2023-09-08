@@ -24,7 +24,7 @@ begin
 
   call dl_lockedAppointmentGet(pLockTokenStr,sTime,eTime,pLockID);
 
-  if !isNull(pLockID) then
+  if (not isNull(pLockID)) then
 
     insert dl_appointment (clientID, startTime, endTime)
     values (pClientID,sTime,eTime);

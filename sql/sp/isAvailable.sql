@@ -16,6 +16,7 @@ create function dl_isAvailable (
 	aEndTime datetime
 )
 returns bit
+reads sql data
 begin
 
   -- pStart and pEnd are the argument start and end times without the day portion of the timestamp
@@ -42,7 +43,7 @@ begin
   end if;
 
   -- end time must be greater than start time and be on the same day
-  if (aEndTime <= aStartTime) || (day(aStartTime) != day(aEndTime)) then
+  if (aEndTime <= aStartTime) or (day(aStartTime) != day(aEndTime)) then
     return 0;
   end if;
 
