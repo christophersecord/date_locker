@@ -2,7 +2,7 @@
  * @author christophersecord
  * @date 20140124
  * @language ColdFusion
- * @platform railo
+ * @platform Lucee
  */
 component {
 
