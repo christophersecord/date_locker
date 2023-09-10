@@ -6,7 +6,7 @@
  */
 component {
 
-	variables.DAO = new UserDAO();
+	variables.DAO = new ClientDAO();
 
 	variables.clientID = 0;
 	variables.email = "";
@@ -15,14 +15,14 @@ component {
 	/**
 	 * constructor. Populates properties by looking up the clientID.
 	 */
-	public User function init (required number clientID) {
+	public Client function init (required number clientID) {
 		return this;
 	}
 
 	/**
 	 * alternate constructor when creating a new client
 	 */
-	public User function newUser (
+	public Client function newClient (
 		required string emailAddress,
 		required string plaintextPassword
 	) {
