@@ -37,11 +37,25 @@
 		<cfargument name="passwd" type="string"/>
 		
 		<cfset var clientID = 0/>
-		<cfstoredproc procedure="dl_clientCreate" datasource="dl">
-			<cfprocparam value="#emailAddress#" cfsqltype="cf_sql_varchar"/>
-			<cfprocparam value="#passwd#" cfsqltype="cf_sql_varchar"/>
-			<cfprocparam type="out" variable="clientID" cfsqltype="cf_sql_integer"/>
-		</cfstoredproc>
+
+		<!--- if a password is provided, create a user account --->
+		<cfif structKeyExists(arguments,"passwd")>
+
+			<cfstoredproc procedure="dl_clientCreate" datasource="dl">
+				<cfprocparam value="#emailAddress#" cfsqltype="cf_sql_varchar"/>
+				<cfprocparam value="#passwd#" cfsqltype="cf_sql_varchar"/>
+				<cfprocparam type="out" variable="clientID" cfsqltype="cf_sql_integer"/>
+			</cfstoredproc>
+
+		<!--- if no password is provided, create a guest account --->
+		<cfelse>
+
+			<cfstoredproc procedure="dl_clientCreate" datasource="dl">
+				<cfprocparam value="#emailAddress#" cfsqltype="cf_sql_varchar"/>
+				<cfprocparam cfsqltype="cf_sql_varchar" null="true"/>
+				<cfprocparam type="out" variable="clientID" cfsqltype="cf_sql_integer"/>
+			</cfstoredproc>
+		</cfif>
 		
 		<cfreturn clientID/>
 	</cffunction>

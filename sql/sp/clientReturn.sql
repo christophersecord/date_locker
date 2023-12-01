@@ -27,6 +27,8 @@ begin
   where loginID = dl_listFirst(loginTokenString)
     and loginToken = dl_listRest(loginTokenString);
 
+    -- TODO: LOL WHERE LOGOUTTIME > sysDate
+
 
   if (pClientID is not null) then
 

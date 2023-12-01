@@ -15,7 +15,7 @@ component {
 	/**
 	 * constructor. Populates properties by looking up the clientID.
 	 */
-	public Client function init (required number clientID) {
+	public Client function init (number clientID) {
 		return this;
 	}
 
@@ -24,17 +24,21 @@ component {
 	 */
 	public Client function newClient (
 		required string emailAddress,
-		required string plaintextPassword
+		string plaintextPassword
 	) {
 
 		var newClientID = 0;
 
-		// if the email address doesn't already exist
+		// if the email address doesnt already exist
+		if (not emailExists(arguments.emailAddress)) {
 
 			// create the client record
+			DAO.clientCreate(arguments.emailaddress,arguments.plaintextPassword);
+
+		}
 
 		// return the newly created client
-		return new User(newClientID);
+		return new Client(newClientID);
 	}
 
 	/**
